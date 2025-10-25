@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth'
 import { getDashboardData } from '@/lib/actions'
 import { TranscriptForm } from '@/components/transcript-form'
 import { TaskList } from '@/components/task-list'
+import dynamic from 'next/dynamic'
+const ProgressCharts = dynamic(() => import('@/components/progress-charts').then(m => m.ProgressCharts), { ssr: false })
 import { ManualActionForm } from '@/components/manual-action-form'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
