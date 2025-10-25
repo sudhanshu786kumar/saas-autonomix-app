@@ -9,12 +9,11 @@ import { Label } from '@/components/ui/label'
 import { Card } from '@/components/ui/card'
 import { Loader2, Upload, Sparkles, FileText, X } from 'lucide-react'
 import { useToast } from '@/components/ui/toast'
-import { ShimmerLoader } from '@/components/shimmer-loader'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export function TranscriptForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
-  const [fileContent, setFileContent] = useState<string>('')
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { toast } = useToast()
@@ -47,7 +46,6 @@ export function TranscriptForm() {
 
     try {
       const content = await file.text()
-      setFileContent(content)
       
       // Auto-fill the textarea with file content
       const textarea = document.getElementById('content') as HTMLTextAreaElement
@@ -59,7 +57,7 @@ export function TranscriptForm() {
         title: "File uploaded successfully",
         description: `Loaded ${file.name} (${Math.round(file.size / 1024)}KB)`,
       })
-    } catch (error) {
+    } catch {
       toast({
         title: "Error reading file",
         description: "Could not read the file content. Please try again.",
@@ -70,7 +68,6 @@ export function TranscriptForm() {
 
   const removeFile = () => {
     setUploadedFile(null)
-    setFileContent('')
     if (fileInputRef.current) {
       fileInputRef.current.value = ''
     }
@@ -81,6 +78,7 @@ export function TranscriptForm() {
   }
 
   async function handleSubmit(formData: FormData) {
+    console.log('Starting analysis...')
     setIsLoading(true)
     setIsAnalyzing(true)
     
@@ -88,19 +86,15 @@ export function TranscriptForm() {
       const result = await submitTranscript(formData)
       
       if (result.success) {
-        // Get the actual count from the result
-        const actionItemsCount = result.actionItems?.length || 0
-        
         toast({
           title: "🎉 Analysis Complete!",
-          description: `Successfully analyzed transcript and generated ${actionItemsCount} action item${actionItemsCount !== 1 ? 's' : ''}.`,
+          description: "Successfully analyzed transcript and generated action items. Check the dashboard to see the results.",
         })
         
         // Reset form
         const form = document.getElementById('transcript-form') as HTMLFormElement
         form?.reset()
         setUploadedFile(null)
-        setFileContent('')
       }
     } catch (error) {
       toast({
@@ -109,6 +103,7 @@ export function TranscriptForm() {
         variant: "destructive",
       })
     } finally {
+      console.log('Analysis complete, resetting loading states')
       setIsLoading(false)
       setIsAnalyzing(false)
     }
@@ -116,15 +111,31 @@ export function TranscriptForm() {
 
   return (
     <div className="relative">
-      {isAnalyzing && (
-        <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center">
-          <div className="text-center">
-            <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-blue-600" />
-            <p className="text-lg font-medium text-gray-900">Analyzing transcript...</p>
-            <p className="text-sm text-gray-600">This may take a few moments</p>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {isAnalyzing && (
+          <motion.div 
+            className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.div 
+              className="text-center"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+            >
+              <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-blue-600" />
+              <p className="text-lg font-medium text-gray-900">Analyzing transcript...</p>
+              <p className="text-sm text-gray-600">This may take a few moments</p>
+              <div className="mt-4 text-xs text-gray-500">
+                Debug: isAnalyzing={isAnalyzing.toString()}, isLoading={isLoading.toString()}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <form id="transcript-form" action={handleSubmit} className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="title">Meeting Title (Optional)</Label>
@@ -201,8 +212,8 @@ export function TranscriptForm() {
           <span>AI will extract action items, priorities, and team tags</span>
         </div>
         
-        <Button type="submit" disabled={isLoading} className="min-w-[120px]">
-          {isLoading ? (
+        <Button type="submit" disabled={isLoading || isAnalyzing} className="min-w-[120px]">
+          {isLoading || isAnalyzing ? (
             <>
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
               Analyzing...
@@ -225,9 +236,9 @@ export function TranscriptForm() {
           </p>
           <div className="text-xs text-blue-800 bg-white p-3 rounded border">
             <strong>John:</strong> We need to finalize the marketing campaign by Friday. Sarah, can you handle the social media assets?<br/>
-            <strong>Sarah:</strong> Absolutely. I'll have the designs ready by Wednesday for review.<br/>
-            <strong>Mike:</strong> I'll coordinate with the development team to ensure the landing page is ready. We should also schedule a follow-up meeting to review the analytics.<br/>
-            <strong>John:</strong> Great. Let's also make sure we have the budget approval from finance before we launch.
+            <strong>Sarah:</strong> Absolutely. I&apos;ll have the designs ready by Wednesday for review.<br/>
+            <strong>Mike:</strong> I&apos;ll coordinate with the development team to ensure the landing page is ready. We should also schedule a follow-up meeting to review the analytics.<br/>
+            <strong>John:</strong> Great. Let&apos;s also make sure we have the budget approval from finance before we launch.
           </div>
           <Button
             type="button"

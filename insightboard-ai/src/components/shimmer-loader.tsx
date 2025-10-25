@@ -1,10 +1,16 @@
 'use client'
 
 import { Skeleton } from '@/components/ui/skeleton'
+import { motion } from 'framer-motion'
 
 export function ShimmerLoader() {
   return (
-    <div className="w-full">
+    <motion.div 
+      className="w-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6 justify-items-stretch">
         {/* Completion Pie Chart Shimmer */}
         <div className="bg-white p-4 lg:p-6 rounded-lg border shadow-sm flex flex-col h-full">
@@ -70,6 +76,6 @@ export function ShimmerLoader() {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
