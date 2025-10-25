@@ -112,6 +112,3 @@ export default async function DashboardPage() {
     </div>
   )
 }
-
-import dynamic from 'next/dynamic'
-const ProgressCharts = dynamic(() => import('@/components/progress-charts').then(m => m.ProgressCharts), { ssr: false })
