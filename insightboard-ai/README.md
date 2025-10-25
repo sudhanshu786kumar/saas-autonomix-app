@@ -44,7 +44,7 @@ npx prisma migrate dev --name init
 ```
 npx next dev -p 3001
 ```
-4. Open `http://localhost:3001`.
+4. Open `http://localhost:3000`.
 
 ## Usage
 - Sign up at `Auth → Sign Up`
@@ -70,18 +70,3 @@ npx next dev -p 3001
 ## Testing
 ```bash
 npm test          # Run tests
-npm run test:ui   # Run tests with UI
-```
-
-## Alternative LLM Support
-The application supports multiple LLM providers with automatic fallback:
-- **Primary**: OpenAI GPT-4o-mini
-- **Fallback 1**: Anthropic Claude (set `ANTHROPIC_API_KEY`)
-- **Fallback 2**: Google Gemini (set `GOOGLE_API_KEY` or `GEMINI_API_KEY`)
-- **Final Fallback**: Keyword-based analysis
-
-Set environment variables for alternative providers:
-```bash
-ANTHROPIC_API_KEY=your-anthropic-key
-GOOGLE_API_KEY=your-google-key
-```
