@@ -46,11 +46,13 @@ interface ToastContextType {
 
 const ToastContext = React.createContext<ToastContextType | undefined>(undefined)
 
+let toastCounter = 0
+
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = React.useState<(ToastProps & { id: string })[]>([])
 
   const toast = React.useCallback((props: Omit<ToastProps, 'onClose'>) => {
-    const id = Math.random().toString(36).substr(2, 9)
+    const id = `toast-${++toastCounter}`
     setToasts(prev => [...prev, { ...props, id }])
   }, [])
 

@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,53 +8,49 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
+  id            String       @id @default(cuid())
+  email         String       @unique
   name          String?
   password      String
   emailVerified DateTime?
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  transcripts Transcript[]
-  actionItems ActionItem[]
-  accounts    Account[]
-  sessions    Session[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  accounts      Account[]
+  actionItems   ActionItem[]
+  sessions      Session[]
+  transcripts   Transcript[]
 
   @@map("users")
 }
 
 model Transcript {
-  id        String   @id @default(cuid())
-  content   String
-  title     String?
-  sentiment String?  // For Level 3 sentiment analysis
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  id          String       @id @default(cuid())
+  content     String
+  title       String?
+  sentiment   String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  userId      String
   actionItems ActionItem[]
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("transcripts")
 }
 
 model ActionItem {
-  id          String     @id @default(cuid())
-  text        String
-  status      TaskStatus @default(PENDING)
-  priority    Priority   @default(MEDIUM)
-  tags        String[]   // For team tags like @Marketing, @Tech
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  completedAt DateTime?
-
+  id           String      @id @default(cuid())
+  text         String
+  status       TaskStatus  @default(PENDING)
+  priority     Priority    @default(MEDIUM)
+  tags         String[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  completedAt  DateTime?
   userId       String
-  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   transcriptId String?
-  transcript   Transcript? @relation(fields: [transcriptId], references: [id], onDelete: SetNull)
+  transcript   Transcript? @relation(fields: [transcriptId], references: [id])
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([status])
   @@index([priority])
@@ -75,15 +65,14 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@map("accounts")

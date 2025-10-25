@@ -196,7 +196,7 @@ export function TaskList({ actionItems }: TaskListProps) {
 
                   <div className="flex items-center space-x-1 text-xs text-gray-500">
                     <Calendar className="h-3 w-3" />
-                    <span>{formatDistanceToNow(new Date(item.createdAt), { addSuffix: true })}</span>
+                    <span suppressHydrationWarning>{formatDistanceToNow(new Date(item.createdAt), { addSuffix: true })}</span>
                   </div>
                 </div>
 
