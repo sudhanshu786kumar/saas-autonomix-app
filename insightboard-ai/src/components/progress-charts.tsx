@@ -13,7 +13,6 @@ interface ProgressChartsProps {
 }
 
 export function ProgressCharts({ actionItems }: ProgressChartsProps) {
-  // Calculate completion data
   const completedCount = actionItems.filter(item => item.status === 'COMPLETED').length
   const pendingCount = actionItems.filter(item => item.status === 'PENDING').length
   
@@ -22,7 +21,6 @@ export function ProgressCharts({ actionItems }: ProgressChartsProps) {
     { name: 'Pending', value: pendingCount, color: '#f59e0b' }
   ]
 
-  // Calculate priority distribution
   const priorityData = [
     { 
       name: 'High', 

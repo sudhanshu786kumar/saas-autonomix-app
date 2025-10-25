@@ -8,7 +8,6 @@ import { prisma } from './prisma'
 import { analyzeTranscript } from './openai'
 import bcrypt from 'bcryptjs'
 
-// Authentication helper
 async function getAuthenticatedUser() {
   const session = await getServerSession(authOptions)
   if (!session?.user || !('id' in session.user) || !session.user.id) {
@@ -18,7 +17,6 @@ async function getAuthenticatedUser() {
   
   const userId = session.user.id as string
   
-  // Verify the user exists in the database
   const user = await prisma.user.findUnique({
     where: { id: userId }
   })

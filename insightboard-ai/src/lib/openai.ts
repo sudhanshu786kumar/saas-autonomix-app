@@ -1,12 +1,10 @@
 import { GoogleGenAI } from '@google/genai'
 
-// Google Gemini only
 interface LLMProvider {
   name: string
   analyzeTranscript: (transcript: string) => Promise<AnalysisResult>
 }
 
-// Google Gemini support using official SDK
 class GeminiProvider implements LLMProvider {
   name = 'Google Gemini'
   

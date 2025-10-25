@@ -12,9 +12,7 @@ import { Plus, Loader2 } from 'lucide-react'
 import { createActionItem } from '@/lib/actions'
 import { useToast } from '@/components/ui/toast'
 
-interface ManualActionFormProps {
-  // No props needed
-}
+interface ManualActionFormProps {}
 
 export function ManualActionForm({}: ManualActionFormProps) {
   const router = useRouter()
@@ -55,7 +53,6 @@ export function ManualActionForm({}: ManualActionFormProps) {
         description: 'Action item created successfully'
       })
 
-      // Reset form
       setFormData({
         title: '',
         description: '',

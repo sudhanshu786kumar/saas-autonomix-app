@@ -22,7 +22,6 @@ export function TranscriptForm() {
     const file = event.target.files?.[0]
     if (!file) return
 
-    // Check file type
     if (!file.type.includes('text') && !file.name.endsWith('.txt')) {
       toast({
         title: "Invalid file type",
@@ -32,7 +31,6 @@ export function TranscriptForm() {
       return
     }
 
-    // Check file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       toast({
         title: "File too large",
@@ -47,7 +45,6 @@ export function TranscriptForm() {
     try {
       const content = await file.text()
       
-      // Auto-fill the textarea with file content
       const textarea = document.getElementById('content') as HTMLTextAreaElement
       if (textarea) {
         textarea.value = content
@@ -91,7 +88,6 @@ export function TranscriptForm() {
           description: "Successfully analyzed transcript and generated action items. Check the dashboard to see the results.",
         })
         
-        // Reset form
         const form = document.getElementById('transcript-form') as HTMLFormElement
         form?.reset()
         setUploadedFile(null)

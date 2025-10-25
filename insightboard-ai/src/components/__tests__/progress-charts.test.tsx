@@ -22,7 +22,7 @@ jest.mock('recharts', () => ({
     <div data-testid="bar">{children}</div>
   ),
   XAxis: () => <div data-testid="x-axis" />,
-  YAxis: () <div data-testid="y-axis" />,
+  YAxis: () => <div data-testid="y-axis" />,
   CartesianGrid: () => <div data-testid="cartesian-grid" />,
   Tooltip: () => <div data-testid="tooltip" />,
 }))
