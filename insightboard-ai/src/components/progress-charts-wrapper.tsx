@@ -1,25 +1,12 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import { ShimmerLoader } from '@/components/shimmer-loader'
+import { useEffect, useState } from 'react'
 
 const ProgressCharts = dynamic(() => import('@/components/progress-charts').then(m => m.ProgressCharts), { 
   ssr: false,
-  loading: () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div className="bg-white p-6 rounded-lg border">
-        <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-1/3 mb-4"></div>
-          <div className="h-48 bg-gray-200 rounded"></div>
-        </div>
-      </div>
-      <div className="bg-white p-6 rounded-lg border">
-        <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-1/3 mb-4"></div>
-          <div className="h-48 bg-gray-200 rounded"></div>
-        </div>
-      </div>
-    </div>
-  )
+  loading: () => <ShimmerLoader />
 })
 
 interface ActionItem {
@@ -30,8 +17,23 @@ interface ActionItem {
 
 interface ProgressChartsWrapperProps {
   actionItems: ActionItem[]
+  isLoading?: boolean
 }
 
-export function ProgressChartsWrapper({ actionItems }: ProgressChartsWrapperProps) {
+export function ProgressChartsWrapper({ actionItems, isLoading = false }: ProgressChartsWrapperProps) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return <ShimmerLoader />
+  }
+
+  if (isLoading) {
+    return <ShimmerLoader />
+  }
+  
   return <ProgressCharts actionItems={actionItems} />
 }

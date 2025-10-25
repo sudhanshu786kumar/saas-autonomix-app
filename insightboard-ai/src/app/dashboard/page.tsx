@@ -40,16 +40,24 @@ export default async function DashboardPage() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Progress Charts */}
-        <div className="mb-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+        {/* Progress Analytics - Single, Responsive Section */}
+        <div className="mb-6 lg:mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="bg-purple-100 rounded-lg p-3 w-12 h-12 flex items-center justify-center">
+              <BarChart3 className="h-6 w-6 text-purple-600" />
+            </div>
+            <div>
+              <h2 className="text-xl lg:text-2xl font-bold text-gray-900">Progress Analytics</h2>
+              <p className="text-sm lg:text-base text-gray-600">Visualize completion rates and priority distribution</p>
+            </div>
+          </div>
           <ProgressChartsWrapper actionItems={dashboardData.actionItems} />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Forms and Charts */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Transcript Submission */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+          {/* Left Column - Transcript Submission */}
+          <div className="lg:col-span-2">
             <Card className="border-0 shadow-lg">
               <CardHeader>
                 <div className="bg-blue-100 rounded-lg p-3 w-12 h-12 flex items-center justify-center mb-4">
@@ -62,24 +70,10 @@ export default async function DashboardPage() {
                 <TranscriptForm />
               </CardContent>
             </Card>
-
-            {/* Action Items */}
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <div className="bg-green-100 rounded-lg p-3 w-12 h-12 flex items-center justify-center mb-4">
-                  <CheckSquare className="h-6 w-6 text-green-600" />
-                </div>
-                <CardTitle>Action Items</CardTitle>
-                <CardDescription>Track, update, and manage your tasks</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <TaskList actionItems={dashboardData.actionItems} />
-              </CardContent>
-            </Card>
           </div>
 
           {/* Right Column - Manual Action Creation */}
-          <div className="space-y-8">
+          <div className="lg:col-span-1">
             <Card className="border-0 shadow-lg">
               <CardHeader>
                 <div className="bg-indigo-100 rounded-lg p-3 w-12 h-12 flex items-center justify-center mb-4">
@@ -92,22 +86,23 @@ export default async function DashboardPage() {
                 <ManualActionForm />
               </CardContent>
             </Card>
-
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <div className="bg-purple-100 rounded-lg p-3 w-12 h-12 flex items-center justify-center mb-4">
-                  <BarChart3 className="h-6 w-6 text-purple-600" />
-                </div>
-                <CardTitle>Progress Analytics</CardTitle>
-                <CardDescription>Visualize completion rates and priority distribution</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-64">
-                  <ProgressChartsWrapper actionItems={dashboardData.actionItems} />
-                </div>
-              </CardContent>
-            </Card>
           </div>
+        </div>
+
+        {/* Action Items - Full Width */}
+        <div className="mt-6 lg:mt-8">
+          <Card className="border-0 shadow-lg">
+            <CardHeader>
+              <div className="bg-green-100 rounded-lg p-3 w-12 h-12 flex items-center justify-center mb-4">
+                <CheckSquare className="h-6 w-6 text-green-600" />
+              </div>
+              <CardTitle>Action Items</CardTitle>
+              <CardDescription>Track, update, and manage your tasks</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <TaskList actionItems={dashboardData.actionItems} />
+            </CardContent>
+          </Card>
         </div>
       </main>
     </div>

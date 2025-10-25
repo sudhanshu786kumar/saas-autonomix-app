@@ -23,7 +23,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { Trash2, Calendar, Tag, CheckSquare } from 'lucide-react'
+import { Trash2, Calendar, Tag, CheckSquare, Loader2 } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 
 interface ActionItem {
@@ -46,6 +46,7 @@ interface TaskListProps {
 export function TaskList({ actionItems }: TaskListProps) {
   const [filter, setFilter] = useState<'ALL' | 'PENDING' | 'COMPLETED'>('ALL')
   const [sortBy, setSortBy] = useState<'created' | 'priority'>('created')
+  const [updatingTasks, setUpdatingTasks] = useState<Set<string>>(new Set())
 
   const filteredItems = actionItems.filter(item => {
     if (filter === 'ALL') return true
@@ -70,10 +71,17 @@ export function TaskList({ actionItems }: TaskListProps) {
   }
 
   async function handleToggleStatus(taskId: string) {
+    setUpdatingTasks(prev => new Set(prev).add(taskId))
     try {
       await toggleTaskStatus(taskId)
     } catch (error) {
       console.error('Failed to toggle task status:', error)
+    } finally {
+      setUpdatingTasks(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(taskId)
+        return newSet
+      })
     }
   }
 
@@ -147,11 +155,19 @@ export function TaskList({ actionItems }: TaskListProps) {
             }`}
           >
             <div className="flex items-start space-x-3">
-              <Checkbox
-                checked={item.status === 'COMPLETED'}
-                onCheckedChange={() => handleToggleStatus(item.id)}
-                className="mt-1"
-              />
+              <div className="relative">
+                <Checkbox
+                  checked={item.status === 'COMPLETED'}
+                  onCheckedChange={() => handleToggleStatus(item.id)}
+                  disabled={updatingTasks.has(item.id)}
+                  className="mt-1"
+                />
+                {updatingTasks.has(item.id) && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Loader2 className="h-3 w-3 animate-spin text-blue-600" />
+                  </div>
+                )}
+              </div>
               
               <div className="flex-1 min-w-0">
                 <p className={`text-sm ${
