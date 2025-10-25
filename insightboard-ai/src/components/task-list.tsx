@@ -108,7 +108,7 @@ export function TaskList({ actionItems }: TaskListProps) {
       {/* Filters and Sorting */}
       <div className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center space-x-4">
-          <Select value={filter} onValueChange={(value: any) => setFilter(value)}>
+          <Select value={filter} onValueChange={(value: 'ALL' | 'PENDING' | 'COMPLETED') => setFilter(value)}>
             <SelectTrigger className="w-32">
               <SelectValue />
             </SelectTrigger>
@@ -119,7 +119,7 @@ export function TaskList({ actionItems }: TaskListProps) {
             </SelectContent>
           </Select>
 
-          <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
+          <Select value={sortBy} onValueChange={(value: 'created' | 'priority') => setSortBy(value)}>
             <SelectTrigger className="w-32">
               <SelectValue />
             </SelectTrigger>

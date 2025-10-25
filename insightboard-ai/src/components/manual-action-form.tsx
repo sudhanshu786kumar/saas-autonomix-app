@@ -12,7 +12,9 @@ import { Plus, Loader2 } from 'lucide-react'
 import { createActionItem } from '@/lib/actions'
 import { useToast } from '@/components/ui/toast'
 
-interface ManualActionFormProps {}
+interface ManualActionFormProps {
+  // No props needed
+}
 
 export function ManualActionForm({}: ManualActionFormProps) {
   const router = useRouter()
