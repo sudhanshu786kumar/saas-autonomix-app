@@ -4,7 +4,6 @@ import { authOptions } from '@/lib/auth'
 import { getDashboardData } from '@/lib/actions'
 import { TranscriptForm } from '@/components/transcript-form'
 import { TaskList } from '@/components/task-list'
-import { ProgressCharts } from '@/components/progress-charts'
 import { ManualActionForm } from '@/components/manual-action-form'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -50,76 +49,60 @@ export default async function DashboardPage() {
           {/* Left Column - Forms and Charts */}
           <div className="lg:col-span-2 space-y-8">
             {/* Transcript Submission */}
-            <Card>
+            <Card className="border-0 shadow-lg">
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <FileText className="h-5 w-5" />
-                  <span>Submit Meeting Transcript</span>
-                </CardTitle>
-                <CardDescription>
-                  Upload your meeting transcript and let AI extract actionable items automatically.
-                </CardDescription>
+                <div className="bg-blue-100 rounded-lg p-3 w-12 h-12 flex items-center justify-center mb-4">
+                  <FileText className="h-6 w-6 text-blue-600" />
+                </div>
+                <CardTitle>Submit Meeting Transcript</CardTitle>
+                <CardDescription>Paste your meeting transcript to analyze and generate action items</CardDescription>
               </CardHeader>
               <CardContent>
                 <TranscriptForm />
               </CardContent>
             </Card>
 
-            {/* Charts */}
-            <Card>
+            {/* Action Items */}
+            <Card className="border-0 shadow-lg">
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <BarChart3 className="h-5 w-5" />
-                  <span>Task Analytics</span>
-                </CardTitle>
-                <CardDescription>
-                  Visual overview of your task completion and priority distribution.
-                </CardDescription>
+                <div className="bg-green-100 rounded-lg p-3 w-12 h-12 flex items-center justify-center mb-4">
+                  <CheckSquare className="h-6 w-6 text-green-600" />
+                </div>
+                <CardTitle>Action Items</CardTitle>
+                <CardDescription>Track, update, and manage your tasks</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-center text-gray-500 py-8">
-                  <p>Charts will be displayed here once you have action items.</p>
-                </div>
+                <TaskList actionItems={dashboardData.actionItems} />
               </CardContent>
             </Card>
           </div>
 
-          {/* Right Column - Tasks and Recent Activity */}
+          {/* Right Column - Manual Action Creation */}
           <div className="space-y-8">
-            {/* Action Items */}
-            <Card>
+            <Card className="border-0 shadow-lg">
               <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <CheckSquare className="h-5 w-5" />
-                    <span>Action Items</span>
-                  </div>
-                  <Button size="sm" variant="outline">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Task
-                  </Button>
-                </CardTitle>
-                <CardDescription>
-                  Manage your extracted action items and track progress.
-                </CardDescription>
+                <div className="bg-indigo-100 rounded-lg p-3 w-12 h-12 flex items-center justify-center mb-4">
+                  <Plus className="h-6 w-6 text-indigo-600" />
+                </div>
+                <CardTitle>Create Manual Action</CardTitle>
+                <CardDescription>Add custom tasks without a transcript</CardDescription>
               </CardHeader>
-              <CardContent className="p-0">
+              <CardContent>
                 <ManualActionForm />
-                <TaskList actionItems={dashboardData.actionItems} />
               </CardContent>
             </Card>
 
-            {/* Recent Transcripts */}
-            <Card>
+            <Card className="border-0 shadow-lg">
               <CardHeader>
-                <CardTitle>Recent Transcripts</CardTitle>
-                <CardDescription>
-                  Your recently analyzed meeting transcripts.
-                </CardDescription>
+                <div className="bg-purple-100 rounded-lg p-3 w-12 h-12 flex items-center justify-center mb-4">
+                  <BarChart3 className="h-6 w-6 text-purple-600" />
+                </div>
+                <CardTitle>Progress Analytics</CardTitle>
+                <CardDescription>Visualize completion rates and priority distribution</CardDescription>
               </CardHeader>
-              <CardContent className="p-0">
-                <div className="text-center text-gray-500 py-8">
-                  <p>Recent transcripts will be displayed here.</p>
+              <CardContent>
+                <div className="h-64">
+                  <ProgressCharts actionItems={dashboardData.actionItems} />
                 </div>
               </CardContent>
             </Card>
@@ -129,3 +112,6 @@ export default async function DashboardPage() {
     </div>
   )
 }
+
+import dynamic from 'next/dynamic'
+const ProgressCharts = dynamic(() => import('@/components/progress-charts').then(m => m.ProgressCharts), { ssr: false })
