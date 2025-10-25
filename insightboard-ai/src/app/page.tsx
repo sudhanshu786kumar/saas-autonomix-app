@@ -215,7 +215,7 @@ export default async function HomePage() {
             <h3 className="text-2xl font-bold">InsightBoard AI</h3>
           </div>
           <div className="text-center text-gray-400">
-            <p>&copy; 2024 InsightBoard AI. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} InsightBoard AI. All rights reserved.</p>
             <p className="mt-2">Transform your meetings into actionable insights.</p>
           </div>
         </div>
