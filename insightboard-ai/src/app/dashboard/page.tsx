@@ -4,8 +4,7 @@ import { authOptions } from '@/lib/auth'
 import { getDashboardData } from '@/lib/actions'
 import { TranscriptForm } from '@/components/transcript-form'
 import { TaskList } from '@/components/task-list'
-import dynamic from 'next/dynamic'
-const ProgressCharts = dynamic(() => import('@/components/progress-charts').then(m => m.ProgressCharts), { ssr: false })
+import { ProgressChartsWrapper } from '@/components/progress-charts-wrapper'
 import { ManualActionForm } from '@/components/manual-action-form'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -44,7 +43,7 @@ export default async function DashboardPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Progress Charts */}
         <div className="mb-8">
-          <ProgressCharts actionItems={dashboardData.actionItems} />
+          <ProgressChartsWrapper actionItems={dashboardData.actionItems} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -104,7 +103,7 @@ export default async function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="h-64">
-                  <ProgressCharts actionItems={dashboardData.actionItems} />
+                  <ProgressChartsWrapper actionItems={dashboardData.actionItems} />
                 </div>
               </CardContent>
             </Card>
