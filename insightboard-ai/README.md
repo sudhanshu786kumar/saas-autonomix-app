@@ -54,8 +54,7 @@ npx next dev -p 3001
 - Toggle completion and change priority from the task list
 
 ## Hosted Link
-- Deployed URL: [https://insightboard-ai.vercel.app](https://insightboard-ai.vercel.app) (Vercel)
-- Alternative: [https://insightboard-ai.netlify.app](https://insightboard-ai.netlify.app) (Netlify)
+- Deployed URL:[https://sudhanshu-autonomix-ai-saas.vercel.app/](Vercel)
 
 ## Notes
 - Secrets are not committed; use environment variables.
