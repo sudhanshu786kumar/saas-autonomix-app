@@ -2,70 +2,152 @@
 
 A smart dashboard for analyzing meeting transcripts, generating AI-powered action items, and visualizing progress.
 
-## Tech Stack
-- Framework: `Next.js 16` (App Router, Turbopack)
-- Language: `TypeScript`
-- UI: `Tailwind CSS + Shadcn` (Radix UI)
-- Auth: `NextAuth` with `PrismaAdapter`
-- LLM: `OpenAI` (`gpt-4o-mini` via `openai` SDK)
-- Database: `PostgreSQL` + `Prisma`
-- Charts: `Recharts`
+## 🚀 Quick Start
 
-## Features (Level 1)
-- Transcript submission via a multiline form
-- AI generates action items with priority and tags
-- Task list supports complete/delete and updates charts
-- Progress visualization: pie (completion) and bar (priority)
-- Clean, responsive UI
+### Prerequisites
+- Node.js 18+ 
+- PostgreSQL database
+- OpenAI API key (or Google Gemini API key)
 
-## Enhancements (Level 2)
-- Filter and sort tasks (status, creation date, priority)
-- Priority shown and editable in UI
-- Stored in a real database with fields: id, text, status, priority, tags, timestamps
+### Installation
 
-## Advanced (Level 3)
-- Authentication added to protect dashboard routes
-- Optional AI auto-tagging and sentiment analysis in analysis result
-
-## Setup (Local)
-1. Create `.env.local` with:
-```
-OPENAI_API_KEY=your-openai-key
-DATABASE_URL=postgresql://user:password@host:port/database
-NEXTAUTH_SECRET=your-nextauth-secret
-NEXTAUTH_URL=http://localhost:3001
-```
-2. Install and generate Prisma client:
-```
-npm install
-npx prisma migrate dev --name init
-```
-3. Run dev server:
-```
-npx next dev -p 3001
-```
-4. Open `http://localhost:3000`.
-
-## Usage
-- Sign up at `Auth → Sign Up`
-- Sign in with the created credentials
-- Submit a transcript to auto-generate tasks
-- Manually add tasks via the "Create Action Item" form
-- Toggle completion and change priority from the task list
-
-## Hosted Link
-- Deployed URL:[https://sudhanshu-autonomix-ai-saas.vercel.app/](Vercel)
-
-## Notes
-- Secrets are not committed; use environment variables.
-- Works from a fresh clone with minimal setup.
-- Default DB reset for development: `npx prisma migrate reset --force`.
-
-## Level Completed
-- ✅ **Level 1**: Fully implemented (transcript submission, AI analysis, task management, progress visualization, modern UI, hosting)
-- ✅ **Level 2**: Fully implemented (filtering/sorting, AI prioritization, bar charts, database integration)
-- ✅ **Level 3**: Fully implemented (authentication, testing, AI auto-tagging, sentiment analysis, alternative LLM support)
-
-## Testing
+1. **Clone the repository**
 ```bash
-npm test          # Run tests
+git clone <repository-url>
+cd insightboard-ai
+```
+
+2. **Install dependencies**
+```bash
+npm install
+```
+
+3. **Set up environment variables**
+Create a `.env.local` file in the root directory:
+```env
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/insightboard"
+
+# Authentication
+NEXTAUTH_SECRET="your-secret-key-here"
+NEXTAUTH_URL="http://localhost:3000"
+
+# AI Provider (choose one)
+OPENAI_API_KEY="your-openai-api-key"
+# OR
+GEMINI_API_KEY="your-gemini-api-key"
+```
+
+4. **Set up the database**
+```bash
+# Generate Prisma client
+npx prisma generate
+
+# Run database migrations
+npx prisma migrate dev --name init
+
+# (Optional) Seed the database
+npx prisma db seed
+```
+
+5. **Start the development server**
+```bash
+npm run dev
+```
+
+6. **Open your browser**
+Navigate to `http://localhost:3000`
+
+## 🎯 Features
+
+- **AI-Powered Analysis**: Upload meeting transcripts and get intelligent action items
+- **Task Management**: Create, update, and track tasks with priority levels
+- **Progress Visualization**: Interactive charts showing completion rates and priority distribution
+- **User Authentication**: Secure sign-up and sign-in with NextAuth
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Real-time Updates**: Dynamic dashboard with live data updates
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS + Shadcn/ui
+- **Authentication**: NextAuth.js
+- **Database**: PostgreSQL with Prisma ORM
+- **AI Integration**: OpenAI GPT-4 / Google Gemini
+- **Charts**: Recharts
+- **Testing**: Jest + React Testing Library
+
+## 📱 Usage
+
+1. **Sign Up**: Create a new account at `/auth/signup`
+2. **Sign In**: Access your dashboard at `/auth/signin`
+3. **Submit Transcripts**: Upload meeting transcripts for AI analysis
+4. **Manage Tasks**: Create, update, and track action items
+5. **View Analytics**: Monitor progress with interactive charts
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+npm test
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests in watch mode
+npm run test:watch
+```
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Add environment variables in Vercel dashboard
+4. Deploy automatically
+
+### Manual Deployment
+```bash
+# Build the application
+npm run build
+
+# Start production server
+npm start
+```
+
+## 🔧 Development
+
+### Database Management
+```bash
+# Reset database (development only)
+npx prisma migrate reset --force
+
+# View database in Prisma Studio
+npx prisma studio
+
+# Generate new migration
+npx prisma migrate dev --name your-migration-name
+```
+
+### Code Quality
+```bash
+# Run linting
+npm run lint
+
+# Format code
+npm run format
+```
+
+## 📊 API Endpoints
+
+- `POST /api/auth/[...nextauth]` - Authentication endpoints
+- `GET /api/transcripts` - Fetch user transcripts
+- `POST /api/transcripts` - Create new transcript
+- `PUT /api/tasks/:id` - Update task status/priority
+- `DELETE /api/tasks/:id` - Delete task
+
+
+## 🔗 Live Demo
+
+[View Live Application](https://sudhanshu-autonomix-ai-saas.vercel.app/)
