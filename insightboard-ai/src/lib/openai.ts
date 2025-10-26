@@ -6,10 +6,24 @@ interface LLMProvider {
 }
 
 class GeminiProvider implements LLMProvider {
+  private apiKey: string
   name = 'Google Gemini'
   
+  constructor() {
+    // Check for API key at startup and validate format
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY
+    if (!apiKey) {
+      console.error('[GeminiProvider] No API key found. Set GEMINI_API_KEY or GOOGLE_API_KEY in environment.')
+      throw new Error('Gemini API key not configured')
+    }
+    if (!apiKey.startsWith('AI') || apiKey.length < 40) {
+      console.warn('[GeminiProvider] API key format looks invalid. Verify key in environment.')
+    }
+    this.apiKey = apiKey
+  }
+  
   async analyzeTranscript(transcript: string): Promise<AnalysisResult> {
-    if (!process.env.GEMINI_API_KEY) {
+    if (!this.apiKey) {
       throw new Error('Gemini API key not configured')
     }
 
@@ -48,7 +62,8 @@ Guidelines:
 `
 
     try {
-      const ai = new GoogleGenAI({})
+      // Pass the validated API key explicitly to ensure it's included in requests
+      const ai = new GoogleGenAI({ apiKey: this.apiKey })
       
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
