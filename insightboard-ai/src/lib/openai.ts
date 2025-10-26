@@ -10,14 +10,16 @@ class GeminiProvider implements LLMProvider {
   name = 'Google Gemini'
   
   constructor() {
-    // Check for API key at startup and validate format
+    // Check for API key presence
     const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY
     if (!apiKey) {
       console.error('[GeminiProvider] No API key found. Set GEMINI_API_KEY or GOOGLE_API_KEY in environment.')
       throw new Error('Gemini API key not configured')
     }
-    if (!apiKey.startsWith('AI') || apiKey.length < 40) {
-      console.warn('[GeminiProvider] API key format looks invalid. Verify key in environment.')
+    
+    // Only warn if key is suspiciously short (most API keys are 40+ chars)
+    if (apiKey.length < 20) {
+      console.warn('[GeminiProvider] API key seems unusually short. Verify key in environment.')
     }
     this.apiKey = apiKey
   }
